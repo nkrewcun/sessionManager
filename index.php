@@ -9,12 +9,13 @@ $session->taille = 165;
 $session->age = 10;
 $session->user = new User('Nathan', '123456');
 
-echo 'Ma variable $_SESSION<br>';
+echo 'Ma variable $_SESSION avant le save<br>';
 var_dump($_SESSION);
 
-echo 'Le petit get de l\'objet user';
-var_dump($session->user);
+echo 'Ma variable $_SESSION après le save<br>';
+$session->save();
+var_dump($_SESSION);
 
-echo 'unset de toto et test avec isset';
-unset($session->toto);
-var_dump(isset($session->toto));
+echo 'Ma variable $_SESSION après le destruct<br>';
+$session->destruct();
+var_dump($_SESSION);

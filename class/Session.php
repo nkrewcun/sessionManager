@@ -4,43 +4,46 @@
 class Session
 {
 
+    public $session = [];
+
     /**
      * Fonction pour ajouter un élément à la session
-     * @param $name Le nom de l'élément à ajouter
-     * @param $value La valeur de l'élément à ajouter
+     * @param $name string Le nom de l'élément à ajouter
+     * @param $value mixed valeur de l'élément à ajouter
      */
     public function __set($name, $value)
     {
-        $_SESSION[$name] = serialize($value);
+        $this->session[$name] = $value;
     }
 
     /**
      * Fonction qui retourne la valeur d'un élément de la session ou null s'il n'existe pas
-     * @param $name Le nom de l'élément à retourner
+     * @param $name string Le nom de l'élément à retourner
      * @return mixed|null La valeur retournée ou null si l'élément n'existe pas
      */
     public function __get($name)
     {
-        return $this->__isset($name) ? unserialize($_SESSION[$name]) : null;
+
+        return $this->__isset($name) ? $this->session[$name] : null;
     }
 
     /**
      * Fonction qui vérifie si un élément est bien existant dans la session
-     * @param $name Le nom de l'élément à vérifier
+     * @param $name string Le nom de l'élément à vérifier
      * @return bool
      */
     public function __isset($name)
     {
-        return isset($_SESSION[$name]);
+        return isset($this->session[$name]);
     }
 
     /**
      * Fonction qui permet de supprimer un élément de la session
-     * @param $name Le nom de l'élément à supprimer
+     * @param $name string Le nom de l'élément à supprimer
      */
     public function __unset($name)
     {
-        unset($_SESSION[$name]);
+        unset($this->session[$name]);
     }
 
     /**
@@ -49,6 +52,15 @@ class Session
     public function __construct()
     {
         session_start();
+        foreach ($_SESSION as $key => $value) {
+            $this->session[$key] = unserialize($value);
+        }
+    }
+
+    public function save() {
+        foreach ($this->session as $key => $value) {
+            $_SESSION[$key] = serialize($value);
+        }
     }
 
     /**
@@ -56,7 +68,10 @@ class Session
      */
     public function destruct()
     {
-        session_destroy();
+        foreach ($_SESSION as $key => $value) {
+            unset($_SESSION[$key]);
+            $this->__unset($key);
+        }
     }
 
 }
