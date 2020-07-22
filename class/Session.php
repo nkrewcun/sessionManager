@@ -7,7 +7,7 @@ class Session
     public $session = [];
 
     /**
-     * Fonction pour ajouter un élément à la session
+     * Fonction pour ajouter un élément au tableau $session
      * @param $name string Le nom de l'élément à ajouter
      * @param $value mixed valeur de l'élément à ajouter
      */
@@ -17,7 +17,7 @@ class Session
     }
 
     /**
-     * Fonction qui retourne la valeur d'un élément de la session ou null s'il n'existe pas
+     * Fonction qui retourne la valeur d'un élément du tableau $session ou null s'il n'existe pas
      * @param $name string Le nom de l'élément à retourner
      * @return mixed|null La valeur retournée ou null si l'élément n'existe pas
      */
@@ -28,7 +28,7 @@ class Session
     }
 
     /**
-     * Fonction qui vérifie si un élément est bien existant dans la session
+     * Fonction qui vérifie si un élément est bien existant dans le tableau $session
      * @param $name string Le nom de l'élément à vérifier
      * @return bool
      */
@@ -38,7 +38,7 @@ class Session
     }
 
     /**
-     * Fonction qui permet de supprimer un élément de la session
+     * Fonction qui permet de supprimer un élément du tableau $session
      * @param $name string Le nom de l'élément à supprimer
      */
     public function __unset($name)
@@ -47,7 +47,7 @@ class Session
     }
 
     /**
-     * Constructeur de la session
+     * Constructeur de la session en récupérant tous les éléments existants dans $_SESSION
      */
     public function __construct()
     {
@@ -57,6 +57,9 @@ class Session
         }
     }
 
+    /**
+     * Fonction pour sauvegarder notre tableau $session dans $_SESSION
+     */
     public function save() {
         foreach ($this->session as $key => $value) {
             $_SESSION[$key] = serialize($value);
@@ -64,7 +67,7 @@ class Session
     }
 
     /**
-     * Fermeture de la session
+     * On supprime tous les éléments du tableau $session et de $_SESSION
      */
     public function destruct()
     {
